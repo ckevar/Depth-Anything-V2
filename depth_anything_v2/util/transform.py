@@ -112,15 +112,14 @@ class Resize(object):
         
         # resize sample
         sample["image"] = cv2.resize(sample["image"], (width, height), interpolation=self.__image_interpolation_method)
-
+        '''
         if self.__resize_target:
             if "depth" in sample:
-                print("Resize in depth")
                 sample["depth"] = cv2.resize(sample["depth"], (width, height), interpolation=cv2.INTER_NEAREST)
                 
             if "mask" in sample:
-                print("Resize in mask")
                 sample["mask"] = cv2.resize(sample["mask"].astype(np.float32), (width, height), interpolation=cv2.INTER_NEAREST)
+        '''
         ts = time.time() - ts
         print("Time spent in resizing {}".format(ts))
         return sample
@@ -137,7 +136,9 @@ class NormalizeImage(object):
     def __call__(self, sample):
         ts = time.time()
         sample["image"] = sample["image"].astype(np.float32)
-        sample["image"] = (sample["image"] - self.__mean[0]) / self.__std[0]
+        sample["image"][:,:,0] = (sample["image"][:,:,0] - self.__mean[0]) / self.__std[0]
+        sample["image"][:,:,1] = sample["image"][:,:,0]
+        sample["image"][:,:,2] = sample["image"][:,:,0]
         ts = time.time() - ts
         print("Time on normalization {}".format(ts))
         return sample

@@ -205,18 +205,19 @@ class DepthAnythingV2(nn.Module):
                 resize_method='lower_bound',
                 image_interpolation_method=cv2.INTER_CUBIC,
             ),
-            # NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            NormalizeImage(mean=[0.485], std=[0.229]),
+            NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            #NormalizeImage(mean=[0.485], std=[0.229]),
             PrepareForNet(),
         ])
         
         h, w = raw_image.shape[:2]
         
-        image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2GRAY) / 255.0
+        #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2GRAY) / 255.0
+        image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
         print("New image shape is {}".format(image.shape))
         image = transform({'image': image})['image']
         image = torch.from_numpy(image).unsqueeze(0)
-        
+        print("type {}, shape {}".format(type(image), image.shape))
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
         image = image.to(DEVICE)
         

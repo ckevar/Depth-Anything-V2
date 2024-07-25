@@ -126,7 +126,8 @@ class Resize(object):
         width, height = self.get_size(sample["image"].shape[1], sample["image"].shape[0])
         print("width:{}, height:{}".format(width, height))
         # resize sample
-        sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
+        #sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
+        sample["image"] = sample["image"][:,:,0]
         #print("Sample Image {}".format(sample["image"]))
         #cv2_imshow(sample["image"])
         '''

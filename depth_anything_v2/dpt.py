@@ -187,7 +187,7 @@ class DepthAnythingV2(nn.Module):
     def infer_image(self, raw_image, input_size=518):
         print("Hello from depth anything")
         image, (h, w) = self.image2tensor(raw_image, input_size)
-        torch.cuda.synchronize()
+        
         ts = time.time()
         depth = self.forward(image)
         ts = time.time() - ts

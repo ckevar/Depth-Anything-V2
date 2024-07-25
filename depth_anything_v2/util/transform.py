@@ -113,20 +113,21 @@ class Resize(object):
         return (new_width, new_height)
     
     def Normalization(self, sample):
-        ts = time.time()
+        #ts = time.time(), torch it up!
         sample["image"] = sample["image"].astype(np.float32)
         sample["image"] = (sample["image"] - self.__mean) / self.__std
         sample["image"] = np.stack((sample["image"],sample["image"],sample["image"]))
-        ts = time.time() - ts
-        print("Time on normalization {}".format(ts))
+        #ts = time.time() - ts
+        #print("Time on normalization {}".format(ts))
         return sample
 
     def __call__(self, sample):
         ts = time.time()
+        # TODO: check image is multiple of 14
         # width, height = self.get_size(sample["image"].shape[1], sample["image"].shape[0])
-        
+    
         # resize sample
-        #sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
+        # sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
         sample["image"] = sample["image"][:,:,0]
         
         '''

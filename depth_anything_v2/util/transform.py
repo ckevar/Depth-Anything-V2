@@ -151,8 +151,8 @@ class NormalizeImage(object):
     def __call__(self, sample):
         ts = time.time()
         sample["image"] = sample["image"].astype(np.float32)
-        sample["image"][:,:,0] = (sample["image"][:,:,0] - self.__mean[0]) / self.__std[0]
-        sample["image"] = np.stack((sample["image"][:,:,0],sample["image"][:,:,0],sample["image"][:,:,0]))
+        sample["image"] = (sample["image"] - self.__mean[0]) / self.__std[0]
+        sample["image"] = np.stack((sample["image"],sample["image"],sample["image"]))
         ts = time.time() - ts
         print("Time on normalization {}".format(ts))
         return sample

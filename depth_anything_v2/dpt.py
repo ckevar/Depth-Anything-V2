@@ -255,5 +255,5 @@ class DepthAnythingV2(nn.Module):
         image = image.to(DEVICE, non_blocking=True)
         ts = time.time() - ts
         print("time on moving to GPU {}".format(ts))
-        
+        print(image2)
         return image, (h, w), image2

@@ -224,6 +224,7 @@ class DepthAnythingV2(nn.Module):
             #PrepareForNet(),
         ])
         '''
+        '''
         transform = Resize(
             width=input_size,
             height=input_size,
@@ -232,18 +233,18 @@ class DepthAnythingV2(nn.Module):
             ensure_multiple_of=14,
             resize_method='lower_bound',
             image_interpolation_method=cv2.INTER_CUBIC,
-            mean=0.449,
+            mean=255*0.449,
             std=255.0*0.226,
         )
+        '''
         h, w = raw_image.shape[:2]
         
         #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
         ts = time.time()
-        image = transform.__call__({'image': raw_image})["image"]
+        #image = transform.__call__({'image': raw_image})["image"]
+        image = image[:,:,0].astype(np.float32)
         ts = time.time() - ts
         print("elapsed time transform {}".format(ts))
-        
-        print("type {}, shape {}".format(type(image), image.shape))
         
         ts = time.time()
         image = torch.from_numpy(image).unsqueeze(0)
@@ -252,7 +253,12 @@ class DepthAnythingV2(nn.Module):
 
         ts = time.time()
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
+        image = image.to(DEVICE)
+        image = crop_img[:,:,0].astype(np.float32)
+        image = torch.from_numpy(image).unsqueeze(0)
         image = image.to(DEVICE, non_blocking=True)
+        image = ((image - 255.0*0.426)) / (255*0.229)
+        image = torch.stack((image, image, image), axis=1)
         ts = time.time() - ts
         print("time on moving to GPU {}".format(ts))
         

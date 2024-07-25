@@ -194,10 +194,9 @@ class DepthAnythingV2(nn.Module):
         
         ts = time.time()
         depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)[0, 0]
-        _ = depth.detach().numpy()
         ts = time.time() - ts
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))
-        return depth.detach().cpu().numpy()
+        return depth.cpu().numpy()
     
     def image2tensor(self, raw_image, input_size=518):        
         '''
@@ -235,10 +234,18 @@ class DepthAnythingV2(nn.Module):
         image = transform.__call__({'image': raw_image})['image']
         ts = time.time() - ts
         print("elapsed time transform {}".format(ts))
+        
         print("type {}, shape {}".format(type(image), image.shape))
+        
+        ts = time.time()
         image = torch.from_numpy(image).unsqueeze(0)
-        print("type {}, shape {}".format(type(image), image.shape))
+        ts = time.time() - ts
+        print("type {}, shape {}, time {}".format(type(image), image.shape, ts))
+
+        ts = time.time()
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
         image = image.to(DEVICE)
+        ts = time.time() - ts
+        print("time on moving to GPU {}".format(ts))
         
         return image, (h, w)

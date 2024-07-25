@@ -191,7 +191,7 @@ class DepthAnythingV2(nn.Module):
     @torch.no_grad()
     def infer_image(self, raw_image, input_size=518):
         print("Hello from depth anything")
-        image, (h, w) = self.image2tensor(raw_image, input_size)
+        image, (h, w), image2 = self.image2tensor(raw_image, input_size)
         
         ts = time.time()
         depth = self.forward(image)
@@ -204,7 +204,7 @@ class DepthAnythingV2(nn.Module):
         depth_cpu = (depth / torch.max(depth) * 255).type(torch.uint8)
         ts = time.time() - ts
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))
-        return depth_cpu.to('cpu', non_blocking=True).numpy()
+        return depth_cpu.to('cpu', non_blocking=True).numpy(), image2
     
     def image2tensor(self, raw_image, input_size=518):        
         '''
@@ -246,7 +246,7 @@ class DepthAnythingV2(nn.Module):
         print("type {}, shape {}".format(type(image), image.shape))
         
         ts = time.time()
-        image = torch.from_numpy(image).unsqueeze(0)
+        image, image2 = torch.from_numpy(image).unsqueeze(0)
         ts = time.time() - ts
         print("type {}, shape {}, time {}".format(type(image), image.shape, ts))
 
@@ -256,4 +256,4 @@ class DepthAnythingV2(nn.Module):
         ts = time.time() - ts
         print("time on moving to GPU {}".format(ts))
         
-        return image, (h, w)
+        return image, (h, w), image2

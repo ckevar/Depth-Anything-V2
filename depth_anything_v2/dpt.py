@@ -254,9 +254,6 @@ class DepthAnythingV2(nn.Module):
         ts = time.time()
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
         image = image.to(DEVICE)
-        image = crop_img[:,:,0].astype(np.float32)
-        image = torch.from_numpy(image).unsqueeze(0)
-        image = image.to(DEVICE, non_blocking=True)
         image = ((image - 255.0*0.426)) / (255*0.229)
         image = torch.stack((image, image, image), axis=1)
         ts = time.time() - ts

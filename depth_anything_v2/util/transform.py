@@ -127,8 +127,8 @@ class Resize(object):
         
         # resize sample
         sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
-        print("Sample Image {}".format(sample["image"]))
-        cv2_imshow(sample["image"])
+        #print("Sample Image {}".format(sample["image"]))
+        #cv2_imshow(sample["image"])
         '''
         if self.__resize_target:
             if "depth" in sample:

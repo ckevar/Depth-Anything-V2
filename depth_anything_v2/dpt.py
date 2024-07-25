@@ -244,7 +244,7 @@ class DepthAnythingV2(nn.Module):
 
         ts = time.time()
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
-        image = image.to(DEVICE)
+        image = image.to(DEVICE, non_blocking=True)
         ts = time.time() - ts
         print("time on moving to GPU {}".format(ts))
         

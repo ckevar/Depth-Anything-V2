@@ -185,6 +185,7 @@ class DepthAnythingV2(nn.Module):
     
     @torch.no_grad()
     def infer_image(self, raw_image, input_size=518):
+        print("Hello from depth anything")
         image, (h, w) = self.image2tensor(raw_image, input_size)
         
         depth = self.forward(image)
@@ -211,7 +212,7 @@ class DepthAnythingV2(nn.Module):
         h, w = raw_image.shape[:2]
         
         image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2GRAY) / 255.0
-        print(image.shape)
+        print("New image shape is {}".format(image.shape))
         image = transform({'image': image})['image']
         image = torch.from_numpy(image).unsqueeze(0)
         

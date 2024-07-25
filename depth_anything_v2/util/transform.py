@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+import time
 
 class Resize(object):
     """Resize sample to given size (width, height).
@@ -131,8 +131,10 @@ class NormalizeImage(object):
         self.__std = std
 
     def __call__(self, sample):
+        ts = time.time()
         sample["image"] = (sample["image"] - self.__mean) / self.__std
-
+        ts = time.time() - ts
+        print("Time on normalization {}".format(ts))
         return sample
 
 
@@ -144,6 +146,7 @@ class PrepareForNet(object):
         pass
 
     def __call__(self, sample):
+        ts = time.time()
         image = np.transpose(sample["image"], (2, 0, 1))
         sample["image"] = np.ascontiguousarray(image).astype(np.float32)
 
@@ -154,5 +157,6 @@ class PrepareForNet(object):
         if "mask" in sample:
             sample["mask"] = sample["mask"].astype(np.float32)
             sample["mask"] = np.ascontiguousarray(sample["mask"])
-        
+        ts = time.time() - ts
+        print("Time on Prepare for Net {}".format(ts))
         return sample

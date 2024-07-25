@@ -218,7 +218,7 @@ class DepthAnythingV2(nn.Module):
         #ts = time.time() - ts
         #print("elapsed time changing colors {}".format(ts))
         ts = time.time()
-        image = transform({'image': image})['image']
+        image = transform({'image': raw_image})['image']
         ts = time.time() - ts
         print("elapsed time transform {}".format(ts))
         print("type {}, shape {}".format(type(image), image.shape))

@@ -117,9 +117,9 @@ class DPTHead(nn.Module):
     def forward(self, out_features, patch_h, patch_w):
         out = []
         
-        '''
-        for i, x in enumerate(out_features):
         
+        for i, x in enumerate(out_features):
+            '''        
             if self.use_clstoken:
                 x, cls_token = x[0], x[1]
                 readout = cls_token.unsqueeze(1).expand_as(x)
@@ -127,8 +127,8 @@ class DPTHead(nn.Module):
             else:
                 x = x[0]
             '''
-        for i in range(len(out_features)):
-            x = out_features[0]
+            
+            x = x[0]
             x = x.permute(0, 2, 1).reshape((x.shape[0], x.shape[-1], patch_h, patch_w))
             
             x = self.projects[i](x)

@@ -40,7 +40,8 @@ class DPTHead(nn.Module):
         self, 
         in_channels, 
         features=256, 
-        use_bn=False, 
+        #use_bn=False,
+        use_bn=True,
         out_channels=[256, 512, 1024, 1024], 
         use_clstoken=False
     ):

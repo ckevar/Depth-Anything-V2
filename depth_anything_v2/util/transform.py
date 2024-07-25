@@ -115,9 +115,11 @@ class Resize(object):
 
         if self.__resize_target:
             if "depth" in sample:
+                print("Resize in depth")
                 sample["depth"] = cv2.resize(sample["depth"], (width, height), interpolation=cv2.INTER_NEAREST)
                 
             if "mask" in sample:
+                print("Resize in mask")
                 sample["mask"] = cv2.resize(sample["mask"].astype(np.float32), (width, height), interpolation=cv2.INTER_NEAREST)
         ts = time.time() - ts
         print("Time spent in resizing {}".format(ts))
@@ -155,18 +157,12 @@ class PrepareForNet(object):
         ts = time.time() - ts
         print("Time S in transpose and contiguos {}".format(ts))
         '''
-        ts = time.time()
         if "depth" in sample:
             depth = sample["depth"].astype(np.float32)
             sample["depth"] = np.ascontiguousarray(depth)
-        ts = time.time() - ts
-        print("Time S in depth {}".format(ts))
 
-        ts = time.time()
         if "mask" in sample:
             sample["mask"] = sample["mask"].astype(np.float32)
             sample["mask"] = np.ascontiguousarray(sample["mask"])
-        ts = time.time() - ts
-        print("Time mask {}".format(ts))
         '''
         return sample

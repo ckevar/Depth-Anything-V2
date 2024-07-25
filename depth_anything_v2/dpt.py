@@ -190,6 +190,7 @@ class DepthAnythingV2(nn.Module):
         
         ts = time.time()
         depth = self.forward(image)
+        torch.cuda.synchronize()
         ts = time.time() - ts
         print("Time on forward {}".format(ts))
         

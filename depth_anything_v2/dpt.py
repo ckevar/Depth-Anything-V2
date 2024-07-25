@@ -216,7 +216,7 @@ class DepthAnythingV2(nn.Module):
         #ts = time.time()
         #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
         #ts = time.time() - ts
-        print("elapsed time changing colors {}".format(ts))
+        #print("elapsed time changing colors {}".format(ts))
         ts = time.time()
         image = transform({'image': image})['image']
         ts = time.time() - ts

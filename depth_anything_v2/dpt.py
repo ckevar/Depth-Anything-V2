@@ -195,7 +195,7 @@ class DepthAnythingV2(nn.Module):
         
         ts = time.time()
         depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)
-        depth_cpu = depth.squeeze().cpu()
+        depth_cpu = depth.squeeze().to('cpu', non_blocking=True)
         #depth = (depth / torch.max(depth) * 255).type(torch.uint8)
         
         #depth = depth.cpu().numpy()

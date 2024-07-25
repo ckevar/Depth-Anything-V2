@@ -200,7 +200,7 @@ class DepthAnythingV2(nn.Module):
         print("Time on forward {}".format(ts))
         
         ts = time.time()
-        #depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
+        depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
         depth_cpu = (depth / torch.max(depth) * 255).type(torch.uint8)
         ts = time.time() - ts
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))

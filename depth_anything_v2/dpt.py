@@ -239,14 +239,14 @@ class DepthAnythingV2(nn.Module):
         
         #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
         ts = time.time()
-        image = transform.__call__({'image': raw_image})['image']
+        image, image2 = transform.__call__({'image': raw_image})['image']
         ts = time.time() - ts
         print("elapsed time transform {}".format(ts))
         
         print("type {}, shape {}".format(type(image), image.shape))
         
         ts = time.time()
-        image, image2 = torch.from_numpy(image).unsqueeze(0)
+        image = torch.from_numpy(image).unsqueeze(0)
         ts = time.time() - ts
         print("type {}, shape {}, time {}".format(type(image), image.shape, ts))
 

@@ -204,7 +204,7 @@ class DepthAnythingV2(nn.Module):
         depth_cpu = (depth / torch.max(depth) * 255).type(torch.uint8)
         ts = time.time() - ts
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))
-        return depth_cpu.to('cpu', non_blocking=True).numpy(), image2
+        return image2, depth_cpu.to('cpu', non_blocking=True).numpy() 
     
     def image2tensor(self, raw_image, input_size=518):        
         '''

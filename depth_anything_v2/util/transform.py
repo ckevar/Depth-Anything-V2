@@ -107,6 +107,7 @@ class Resize(object):
         return (new_width, new_height)
 
     def __call__(self, sample):
+        ts = time.time()
         width, height = self.get_size(sample["image"].shape[1], sample["image"].shape[0])
         
         # resize sample
@@ -118,7 +119,8 @@ class Resize(object):
                 
             if "mask" in sample:
                 sample["mask"] = cv2.resize(sample["mask"].astype(np.float32), (width, height), interpolation=cv2.INTER_NEAREST)
-        
+        ts = time.time() - ts
+        print("Time spent in resizing {}".format(ts))
         return sample
 
 

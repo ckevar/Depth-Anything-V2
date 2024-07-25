@@ -40,8 +40,7 @@ class DPTHead(nn.Module):
         self, 
         in_channels, 
         features=256, 
-        #use_bn=False,
-        use_bn=True,
+        use_bn=False,
         out_channels=[256, 512, 1024, 1024], 
         use_clstoken=False
     ):
@@ -206,7 +205,7 @@ class DepthAnythingV2(nn.Module):
                 resize_method='lower_bound',
                 image_interpolation_method=cv2.INTER_CUBIC,
             ),
-            NormalizeImage(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            NormalizeImage(mean=[0.485, 0.456, 0.406], std=[255.*0.229, 255.*0.224, 255.*0.225]),
             #NormalizeImage(mean=[0.485], std=[0.229]),
             PrepareForNet(),
         ])
@@ -214,9 +213,9 @@ class DepthAnythingV2(nn.Module):
         h, w = raw_image.shape[:2]
         
         #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2GRAY) / 255.0
-        ts = time.time()
-        image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
-        ts = time.time() - ts
+        #ts = time.time()
+        #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
+        #ts = time.time() - ts
         print("elapsed time changing colors {}".format(ts))
         ts = time.time()
         image = transform({'image': image})['image']

@@ -137,8 +137,7 @@ class NormalizeImage(object):
         ts = time.time()
         sample["image"] = sample["image"].astype(np.float32)
         sample["image"][:,:,0] = (sample["image"][:,:,0] - self.__mean[0]) / self.__std[0]
-        sample["image"][:,:,1] = sample["image"][:,:,0]
-        sample["image"][:,:,2] = sample["image"][:,:,0]
+        sample["image"] = np.repeat(sample["image"][:,:,0], 3, axis=2)
         ts = time.time() - ts
         print("Time on normalization {}".format(ts))
         return sample

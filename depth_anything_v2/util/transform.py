@@ -137,7 +137,7 @@ class Resize(object):
         ts = time.time() - ts
         print("Time spent in resizing {}".format(ts))
         
-        return Normalization(sample)
+        return self.Normalization(sample)
 
 
 class NormalizeImage(object):

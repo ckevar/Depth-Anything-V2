@@ -144,6 +144,7 @@ class PrepareForNet(object):
         pass
 
     def __call__(self, sample):
+        sample["image"] = np.expand_dims(sample["image"][:,:,1], axis=2)
         image = np.transpose(sample["image"], (2, 0, 1))
         sample["image"] = np.ascontiguousarray(image).astype(np.float32)
 

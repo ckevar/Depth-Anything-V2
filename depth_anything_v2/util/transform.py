@@ -123,10 +123,10 @@ class Resize(object):
 
     def __call__(self, sample):
         ts = time.time()
-        #width, height = self.get_size(sample["image"].shape[1], sample["image"].shape[0])
+        width, height = self.get_size(sample["image"].shape[1], sample["image"].shape[0])
         
         # resize sample
-        #sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
+        sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
         print("Sample Image {}".format(sample["image"]))
         cv2_imshow(sample["image"])
         '''

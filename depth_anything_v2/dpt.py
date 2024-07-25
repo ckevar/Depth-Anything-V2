@@ -211,7 +211,7 @@ class DepthAnythingV2(nn.Module):
         h, w = raw_image.shape[:2]
         
         image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2GRAY) / 255.0
-        
+        print(image.shape)
         image = transform({'image': image})['image']
         image = torch.from_numpy(image).unsqueeze(0)
         

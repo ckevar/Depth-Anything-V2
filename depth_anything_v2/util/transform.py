@@ -149,7 +149,6 @@ class PrepareForNet(object):
 
     def __call__(self, sample):
         ts = time.time()
-        sample["image"] = np.expand_dims(sample["image"][:,:,0], axis=2)
         image = np.transpose(sample["image"], (2, 0, 1))
         sample["image"] = np.ascontiguousarray(image).astype(np.float32)
 

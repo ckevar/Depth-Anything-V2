@@ -190,7 +190,6 @@ class DepthAnythingV2(nn.Module):
     
     @torch.no_grad()
     def infer_image(self, raw_image, input_size=518):
-        print("Hello from depth anything")
         image, (h, w) = self.image2tensor(raw_image, input_size)
         
         ts = time.time()
@@ -206,57 +205,15 @@ class DepthAnythingV2(nn.Module):
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))
         return depth_cpu.to('cpu', non_blocking=True).numpy() 
     
-    def image2tensor(self, raw_image, input_size=518):        
-        '''
-        transform = Compose([
-            Resize(
-                width=input_size,
-                height=input_size,
-                resize_target=False,
-                keep_aspect_ratio=True,
-                ensure_multiple_of=14,
-                resize_method='lower_bound',
-                image_interpolation_method=cv2.INTER_CUBIC,
-                mean=0.449,
-                std=255.0*0.226,
-            ),
-            #NormalizeImage(mean=[0.485, 0.456, 0.406], std=[255.*0.229, 255.*0.224, 255.*0.225]),
-            #PrepareForNet(),
-        ])
-        '''
-        '''
-        transform = Resize(
-            width=input_size,
-            height=input_size,
-            resize_target=False,
-            keep_aspect_ratio=True,
-            ensure_multiple_of=14,
-            resize_method='lower_bound',
-            image_interpolation_method=cv2.INTER_CUBIC,
-            mean=255*0.449,
-            std=255.0*0.226,
-        )
-        '''
-        h, w = raw_image.shape[:2]
-        
-        #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
-        ts = time.time()
-        #image = transform.__call__({'image': raw_image})["image"]
+    def image2tensor(self, raw_image, input_size=518):
+        h, w = raw_image.shape[:2   
         image = raw_image[:,:,0].astype(np.float32)
-        ts = time.time() - ts
-        print("elapsed time transform {}".format(ts))
         
-        ts = time.time()
         image = torch.from_numpy(image).unsqueeze(0)
-        ts = time.time() - ts
-        print("type {}, shape {}, time {}".format(type(image), image.shape, ts))
-
-        ts = time.time()
+        
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
         image = image.to(DEVICE)
         image = ((image - 255.0*0.426)) / (255*0.229)
         image = torch.stack((image, image, image), axis=1)
-        ts = time.time() - ts
-        print("time on moving to GPU {}".format(ts))
         
         return image, (h, w)

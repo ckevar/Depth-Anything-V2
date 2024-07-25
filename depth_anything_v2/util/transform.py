@@ -137,7 +137,7 @@ class NormalizeImage(object):
         ts = time.time()
         sample["image"] = sample["image"].astype(np.float32)
         sample["image"][:,:,0] = (sample["image"][:,:,0] - self.__mean[0]) / self.__std[0]
-        sample["image"] = np.repeat(sample["image"][:,:,0], 3, axis=2)
+        sample["image"] = np.stack((sample["image"][:,:,0],sample["image"][:,:,0],sample["image"][:,:,0]))
         ts = time.time() - ts
         print("Time on normalization {}".format(ts))
         return sample
@@ -152,7 +152,7 @@ class PrepareForNet(object):
 
     def __call__(self, sample):
         ts = time.time()
-        sample["image"] = np.transpose(sample["image"], (2, 0, 1))
+        #sample["image"] = np.transpose(sample["image"], (2, 0, 1))
         # sample["image"] = np.ascontiguousarray(image).astype(np.float32)
         ts = time.time() - ts
         print("Time S in transpose and contiguos {}".format(ts))

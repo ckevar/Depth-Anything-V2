@@ -15,6 +15,8 @@ class Resize(object):
         ensure_multiple_of=1,
         resize_method="lower_bound",
         image_interpolation_method=cv2.INTER_AREA,
+        mean=0.5,
+        std=0.225
     ):
         """Init.
 
@@ -47,6 +49,9 @@ class Resize(object):
         self.__multiple_of = ensure_multiple_of
         self.__resize_method = resize_method
         self.__image_interpolation_method = image_interpolation_method
+
+        self.__mean = mean
+        self.__std = std
 
     def constrain_to_multiple_of(self, x, min_val=0, max_val=None):
         y = (np.round(x / self.__multiple_of) * self.__multiple_of).astype(int)
@@ -105,6 +110,15 @@ class Resize(object):
             raise ValueError(f"resize_method {self.__resize_method} not implemented")
 
         return (new_width, new_height)
+    
+    def Normalization(self, sample):
+        ts = time.time()
+        sample["image"] = sample["image"].astype(np.float32)
+        sample["image"][:,:,0] = (sample["image"][:,:,0] - self.__mean) / self.__std
+        sample["image"] = np.stack((sample["image"][:,:,0],sample["image"][:,:,0],sample["image"][:,:,0]))
+        ts = time.time() - ts
+        print("Time on normalization {}".format(ts))
+        return sample
 
     def __call__(self, sample):
         ts = time.time()
@@ -122,7 +136,8 @@ class Resize(object):
         '''
         ts = time.time() - ts
         print("Time spent in resizing {}".format(ts))
-        return sample
+        
+        return Normalization(sample)
 
 
 class NormalizeImage(object):

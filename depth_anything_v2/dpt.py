@@ -195,6 +195,7 @@ class DepthAnythingV2(nn.Module):
         return depth.cpu().numpy()
     
     def image2tensor(self, raw_image, input_size=518):        
+        '''
         transform = Compose([
             Resize(
                 width=input_size,
@@ -210,12 +211,23 @@ class DepthAnythingV2(nn.Module):
             #NormalizeImage(mean=[0.485, 0.456, 0.406], std=[255.*0.229, 255.*0.224, 255.*0.225]),
             #PrepareForNet(),
         ])
-        
+        '''
+        transform = Resize(
+            width=input_size,
+            height=input_size,
+            resize_target=False,
+            keep_aspect_ratio=True,
+            ensure_multiple_of=14,
+            resize_method='lower_bound',
+            image_interpolation_method=cv2.INTER_CUBIC,
+            mean=0.449,
+            std=255.0*0.226,
+        )
         h, w = raw_image.shape[:2]
         
         #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
         ts = time.time()
-        image = transform({'image': raw_image})['image']
+        image = transform.__call__({'image': raw_image})['image']
         ts = time.time() - ts
         print("elapsed time transform {}".format(ts))
         print("type {}, shape {}".format(type(image), image.shape))

@@ -153,7 +153,7 @@ class PrepareForNet(object):
         sample["image"] = np.ascontiguousarray(image).astype(np.float32)
         ts = time.time() - ts
         print("Time S in transpose and contiguos {}".format(ts))
-
+        '''
         ts = time.time()
         if "depth" in sample:
             depth = sample["depth"].astype(np.float32)
@@ -167,4 +167,5 @@ class PrepareForNet(object):
             sample["mask"] = np.ascontiguousarray(sample["mask"])
         ts = time.time() - ts
         print("Time mask {}".format(ts))
+        '''
         return sample

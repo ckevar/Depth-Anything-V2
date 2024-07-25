@@ -194,13 +194,14 @@ class DepthAnythingV2(nn.Module):
         print("Time on forward {}".format(ts))
         
         ts = time.time()
-        depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)[0, 0]
-        depth = (depth / torch.max(depth) * 255).type(torch.uint8)
+        depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)
+        depth_cpu = depth.squeeze().cpu().numpy()
+        #depth = (depth / torch.max(depth) * 255).type(torch.uint8)
         
-        depth = depth.cpu().numpy()
+        #depth = depth.cpu().numpy()
         ts = time.time() - ts
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))
-        return depth
+        return depth_cpu
     
     def image2tensor(self, raw_image, input_size=518):        
         '''

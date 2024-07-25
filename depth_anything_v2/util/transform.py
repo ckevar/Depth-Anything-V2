@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import time
+from google.colab.patches import cv2_imshow
 
 class Resize(object):
     """Resize sample to given size (width, height).
@@ -126,6 +127,7 @@ class Resize(object):
         
         # resize sample
         sample["image"] = cv2.resize(sample["image"][:,:,0], (width, height), interpolation=self.__image_interpolation_method)
+        cv2_imshow(sample["image"])
         '''
         if self.__resize_target:
             if "depth" in sample:

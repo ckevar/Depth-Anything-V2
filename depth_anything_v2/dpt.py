@@ -195,7 +195,7 @@ class DepthAnythingV2(nn.Module):
         ts = time.time()
         depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)[0, 0]
         ts = time.time() - ts
-        print("Time on interpolate {}".format(ts))
+        print("Time on interpolate {}, type: {}".format(ts, type(depth)))
         return depth.cpu().numpy()
     
     def image2tensor(self, raw_image, input_size=518):        

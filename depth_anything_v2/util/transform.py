@@ -151,14 +151,20 @@ class PrepareForNet(object):
         ts = time.time()
         image = np.transpose(sample["image"], (2, 0, 1))
         sample["image"] = np.ascontiguousarray(image).astype(np.float32)
+        ts = time.time() - ts
+        print("Time S in transpose and contiguos {}".format(ts))
 
+        ts = time.time()
         if "depth" in sample:
             depth = sample["depth"].astype(np.float32)
             sample["depth"] = np.ascontiguousarray(depth)
-        
+        ts = time.time() - ts
+        print("Time S in depth {}".format(ts))
+
+        ts = time.time()
         if "mask" in sample:
             sample["mask"] = sample["mask"].astype(np.float32)
             sample["mask"] = np.ascontiguousarray(sample["mask"])
         ts = time.time() - ts
-        print("Time on Prepare for Net {}".format(ts))
+        print("Time mask {}".format(ts))
         return sample

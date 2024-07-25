@@ -204,8 +204,10 @@ class DepthAnythingV2(nn.Module):
                 ensure_multiple_of=14,
                 resize_method='lower_bound',
                 image_interpolation_method=cv2.INTER_CUBIC,
+                mean=0.449,
+                std=255.0*0.226,
             ),
-            NormalizeImage(mean=[0.485, 0.456, 0.406], std=[255.*0.229, 255.*0.224, 255.*0.225]),
+            #NormalizeImage(mean=[0.485, 0.456, 0.406], std=[255.*0.229, 255.*0.224, 255.*0.225]),
             #PrepareForNet(),
         ])
         

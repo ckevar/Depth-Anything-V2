@@ -194,7 +194,7 @@ class DepthAnythingV2(nn.Module):
         
         ts = time.time()
         depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True)[0, 0]
-        depth = (depth / torch.max(depth) * 255).type(torch.qint8)
+        depth = (depth / torch.max(depth) * 255).type(torch.uint8)
         ts = time.time() - ts
         print("Time on interpolate {}, type: {}".format(ts, type(depth)))
         return depth.cpu().numpy()

@@ -206,7 +206,7 @@ class DepthAnythingV2(nn.Module):
         return depth_cpu.to('cpu', non_blocking=True).numpy() 
     
     def image2tensor(self, raw_image, input_size=518):
-        h, w = raw_image.shape[:2   
+        h, w = raw_image.shape[:2]
         image = raw_image[:,:,0].astype(np.float32)
         
         image = torch.from_numpy(image).unsqueeze(0)

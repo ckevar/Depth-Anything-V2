@@ -7,7 +7,7 @@ import time
 from .dinov2 import DINOv2
 from .util.blocks import FeatureFusionBlock, _make_scratch
 from .util.transform import Resize, NormalizeImage, PrepareForNet
-
+import numpy as np
 
 def _make_fusion_block(features, use_bn, size=None):
     return FeatureFusionBlock(

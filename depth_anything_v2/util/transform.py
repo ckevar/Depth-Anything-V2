@@ -114,8 +114,8 @@ class Resize(object):
     def Normalization(self, sample):
         ts = time.time()
         sample["image"] = sample["image"].astype(np.float32)
-        sample["image"][:,:,0] = (sample["image"][:,:,0] - self.__mean) / self.__std
-        sample["image"] = np.stack((sample["image"][:,:,0],sample["image"][:,:,0],sample["image"][:,:,0]))
+        sample["image"] = (sample["image"] - self.__mean) / self.__std
+        sample["image"] = np.stack((sample["image"],sample["image"],sample["image"]))
         ts = time.time() - ts
         print("Time on normalization {}".format(ts))
         return sample

@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.transforms import Compose
-
+import time
 from .dinov2 import DINOv2
 from .util.blocks import FeatureFusionBlock, _make_scratch
 from .util.transform import Resize, NormalizeImage, PrepareForNet
@@ -214,7 +214,10 @@ class DepthAnythingV2(nn.Module):
         h, w = raw_image.shape[:2]
         
         #image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2GRAY) / 255.0
+        ts = time.time()
         image = cv2.cvtColor(raw_image, cv2.COLOR_BGR2RGB) / 255.0
+        ts = time.time() - ts
+        print("elapsed time changing colors")
         print("New image shape is {}".format(image.shape))
         image = transform({'image': image})['image']
         print("type {}, shape {}".format(type(image), image.shape))

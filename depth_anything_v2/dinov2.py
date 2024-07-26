@@ -336,7 +336,7 @@ class DinoVisionTransformer(nn.Module):
             ts = time.time()
             z1 = zip(outputs, class_tokens)
             ts = time.time() - ts
-            print("Time on zip {}".format(z1))
+            print("Time on zip {}".format(ts))
             
             return tuple(z1)
         return tuple(outputs)

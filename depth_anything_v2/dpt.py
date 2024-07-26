@@ -181,10 +181,18 @@ class DepthAnythingV2(nn.Module):
     def forward(self, x):
         patch_h, patch_w = x.shape[-2] // 14, x.shape[-1] // 14
         
+        ts = time.time()
         features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=True)
-        
+        torch.cuda.synchronize()
+        ts = time.time() - ts
+        print("time on pretrained {}".format(ts))
+
+        ts = time.time()
         depth = self.depth_head(features, patch_h, patch_w)
         depth = F.relu(depth)
+        torch.cuda.synchronize()
+        ts = time.time() - ts
+        print("time on fine tunning {}".format(ts))
         
         return depth.squeeze(1)
     
@@ -196,7 +204,7 @@ class DepthAnythingV2(nn.Module):
         depth = self.forward(image)
         torch.cuda.synchronize()
         ts = time.time() - ts
-        print("Time on forward {}".format(ts))
+        print("Time on inference {}".format(ts))
         
         ts = time.time()
         depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()

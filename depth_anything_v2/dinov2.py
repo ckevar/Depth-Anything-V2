@@ -326,8 +326,7 @@ class DinoVisionTransformer(nn.Module):
         torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@norm {}".format(ts))
-
-        ts = time.time()
+        
         ''' O.OUT:
         if reshape:
             print("pretrained reshape")
@@ -336,12 +335,7 @@ class DinoVisionTransformer(nn.Module):
                 out.reshape(B, w // self.patch_size, h // self.patch_size, -1).permute(0, 3, 1, 2).contiguous()
                 for out in outputs
             ]
-        '''
-        torch.cuda.synchronize()
-        ts = time.time() - ts
-        print("time in reshaping {}".format(ts))
-
-        '''
+            
         if return_class_token:
             class_tokens = [out[:, 0] for out in outputs]
             z1 = zip(outputs, class_tokens)

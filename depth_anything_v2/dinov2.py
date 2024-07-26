@@ -161,7 +161,7 @@ class DinoVisionTransformer(nn.Module):
             self.blocks = nn.ModuleList([BlockChunk(p) for p in chunked_blocks])
         else:
             self.chunked_blocks = False
-            print("len {}, block_list {}, block_list0 {}, block_list1 {}".format(len(blocks_list), block_list, block_list[0], block_list[1]))
+            print("len {}, block_list {}, block_list0 {}, block_list1 {}".format(len(blocks_list), blocks_list, blocks_list[0], blocks_list[1]))
             self.blocks = nn.ModuleList(blocks_list)
 
         self.norm = norm_layer(embed_dim)

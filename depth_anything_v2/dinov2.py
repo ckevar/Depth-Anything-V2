@@ -315,7 +315,7 @@ class DinoVisionTransformer(nn.Module):
             print("pretrained in no chunks")
         ts = time.time() - ts
         torch.cuda.synchronize()
-        print("T@chunked {}, out {}".format(ts, outputs.shape))
+        print("T@chunked {}, out {}".format(ts, len(outputs)))
 
         ts = time.time()
         if norm:

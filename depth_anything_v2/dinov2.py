@@ -338,13 +338,13 @@ class DinoVisionTransformer(nn.Module):
             torch.cuda.synchronize()
             ts = time.time() - ts
             print("Time on zip {}".format(ts))
-
+            '''
             ts = time.time()
             z1 = tuple(z1)
             torch.cuda.synchronize()
             ts = time.time() - ts
             print("Time on tuple {}".format(ts))
-            
+            '''
             return z1
         return tuple(outputs)
 

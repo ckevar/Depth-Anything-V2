@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.transforms import Compose
+from torchvision.io import encode_jpeg
 import time
 from .dinov2 import DINOv2
 from .util.blocks import FeatureFusionBlock, _make_scratch
@@ -210,6 +211,7 @@ class DepthAnythingV2(nn.Module):
         depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
         print(depth.size())
         depth_cpu = (depth / torch.max(depth) * 255).type(torch.uint8)
+        depth_cpu = encode_jpeg(depth_cpu)
         print(depth_cpu.size())
         ts = time.time() - ts
         print("Time on interpolate {}".format(ts))

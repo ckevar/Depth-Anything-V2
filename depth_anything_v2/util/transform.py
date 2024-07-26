@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 import time
-from google.colab.patches import cv2_imshow
 
 class Resize(object):
     """Resize sample to given size (width, height).

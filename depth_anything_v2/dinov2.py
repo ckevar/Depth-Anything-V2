@@ -280,28 +280,12 @@ class DinoVisionTransformer(nn.Module):
         # If n is an int, take the n last blocks. If it's a list, take them
         output, total_block_len = [], len(self.blocks)
         
-        ts = time.time()
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
         for i, blk in enumerate(self.blocks):
-            #ts1 = time.time()
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
-            #torch.cuda.synchronize()
-            #ts1 = time.time() - ts1
-            #print("T@{} {}".format(i, ts1))
-        '''
-        x = self.blocks[0](x)
-        output.append(x)
-        x = self.blocks[1](x)
-        output.append(x)
-        x = self.blocks[2](x)
-        output.append(x)
-        output.append(self.blocks[3](x))
-        '''
-        torch.cuda.synchronize()    
-        ts = time.time() - ts
-        print("T@ enum {}".format(ts))    
+
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"
         return output
 

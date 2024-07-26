@@ -313,11 +313,12 @@ class DinoVisionTransformer(nn.Module):
         else:
             outputs = self._get_intermediate_layers_not_chunked(x, n)
             print("pretrained in no chunks")
-        #ts = time.time() - ts
+            
         torch.cuda.synchronize()
-        #print("T@chunked {}, out {}".format(ts, len(outputs)))
+        ts = time.time() - ts
+        print("T@chunked {}, out {}".format(ts, len(outputs)))
 
-        #ts = time.time()
+        ts = time.time()
         if norm:
             outputs = [self.norm(out)[:, 1 + self.num_register_tokens:] for out in outputs]
         else: 

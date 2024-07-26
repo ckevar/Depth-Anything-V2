@@ -299,7 +299,7 @@ class DinoVisionTransformer(nn.Module):
         for i, blk in enumerate(self.blocks):
             x = blk(x)
             if i == n[j]: 
-                output[i] = x
+                output[j] = x
                 j += 1
             
         ts = time.time() - ts

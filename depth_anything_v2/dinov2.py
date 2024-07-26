@@ -197,6 +197,7 @@ class DinoVisionTransformer(nn.Module):
         
         sqrt_N = math.sqrt(N)
         sx, sy = float(w0) / sqrt_N, float(h0) / sqrt_N
+        ts = time.time()
         patch_pos_embed = nn.functional.interpolate(
             patch_pos_embed.reshape(1, int(sqrt_N), int(sqrt_N), dim).permute(0, 3, 1, 2),
             scale_factor=(sx, sy),
@@ -204,7 +205,8 @@ class DinoVisionTransformer(nn.Module):
             mode="bicubic",
             antialias=self.interpolate_antialias
         )
-        
+        ts = time.time() - ts
+        print("T@mask {}, sx {}, sy {}".format(ts, sx, xy))
         assert int(w0) == patch_pos_embed.shape[-2]
         assert int(h0) == patch_pos_embed.shape[-1]
         patch_pos_embed = patch_pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)

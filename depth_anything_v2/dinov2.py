@@ -162,8 +162,8 @@ class DinoVisionTransformer(nn.Module):
             self.blocks = nn.ModuleList([BlockChunk(p) for p in chunked_blocks])
         else:
             self.chunked_blocks = False
-            #self.blocks = nn.ModuleList(blocks_list)
-            self.blocks = nn.ModuleList([nn.Sequential(blocks_list)])
+            self.blocks = nn.ModuleList(blocks_list)
+            #self.blocks = nn.ModuleList([nn.Sequential(blocks_list)])
             #self.blocks = nn.Sequential(blocks_list)
 
         self.norm = norm_layer(embed_dim)
@@ -293,15 +293,15 @@ class DinoVisionTransformer(nn.Module):
         ts = time.time()
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
         
-        '''
+        
         for i, blk in enumerate(self.blocks):
-            ts1 = time.time()
+            #ts1 = time.time()
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
             #torch.cuda.synchronize()
-            ts1 = time.time() - ts1
-            print("T@{} {}".format(i, ts1))
+            #ts1 = time.time() - ts1
+            #print("T@{} {}".format(i, ts1))
         '''
         x = self.blocks[0](x)
         output.append(x)
@@ -310,6 +310,7 @@ class DinoVisionTransformer(nn.Module):
         x = self.blocks[2](x)
         output.append(x)
         output.append(self.blocks[3](x))
+        '''
         torch.cuda.synchronize()    
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    

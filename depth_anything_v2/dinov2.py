@@ -219,12 +219,15 @@ class DinoVisionTransformer(nn.Module):
         print("B {}, nc {}, w {}, h {}".format(B, nc, w, h))
         x = self.patch_embed(x)
         print("x path {}".format(x.shape))
+        
         if masks is not None:
             x = torch.where(masks.unsqueeze(-1), self.mask_token.to(x.dtype).unsqueeze(0), x)
+            print("masking up")
 
         x = torch.cat((self.cls_token.expand(x.shape[0], -1, -1), x), dim=1)
+        print("x path {}".format(x.shape))
         x = x + self.interpolate_pos_encoding(x, w, h)
-
+        print("x path {}".format(x.shape))
         if self.register_tokens is not None:
             x = torch.cat(
                 (
@@ -234,7 +237,7 @@ class DinoVisionTransformer(nn.Module):
                 ),
                 dim=1,
             )
-
+        print("x path {}".format(x.shape))
         return x
 
     def forward_features_list(self, x_list, masks_list):

@@ -333,7 +333,12 @@ class DinoVisionTransformer(nn.Module):
         print("time in reshaping {}".format(ts))
         
         if return_class_token:
-            return tuple(zip(outputs, class_tokens))
+            ts = time.time()
+            z1 = zip(outputs, class_tokens)
+            ts = time.time() - ts
+            print("Time on zip {}".format(z1))
+            
+            return tuple(z1)
         return tuple(outputs)
 
     def forward(self, *args, is_training=False, **kwargs):

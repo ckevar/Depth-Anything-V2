@@ -275,7 +275,6 @@ class DinoVisionTransformer(nn.Module):
         # OOUT: output, total_block_len = [], len(self.blocks)
         total_block_len = len(self.blocks)
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
-        print("n {}, blocks_to_take {}, self.blocks {}".format(n, blocks_to_take, self.blocks))
         output = [None] * len(n)
         j = 0
         for i, blk in enumerate(self.blocks):

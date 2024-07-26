@@ -341,18 +341,15 @@ class DinoVisionTransformer(nn.Module):
             # O.OUT: return tuple(zip(outputs, class_tokens))
             return z1
         '''
-        print("out in cuda {}".format(output.is_cuda))
+        print("out in cuda {}".format(outputs.is_cuda))
         return outputs
 
     def forward(self, *args, is_training=False, **kwargs):
         ret = self.forward_features(*args, **kwargs)
-        ''' O.OUT:
         if is_training:
             return ret
         else:
             return self.head(ret["x_norm_clstoken"])
-        '''
-        print("IAM here at forwarding")
         return self.head(ret["x_norm_clstoken"])
 
 

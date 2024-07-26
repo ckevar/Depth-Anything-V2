@@ -206,7 +206,7 @@ class DinoVisionTransformer(nn.Module):
             antialias=self.interpolate_antialias
         )
         ts = time.time() - ts
-        print("T@mask {}, sx {}, sy {}".format(ts, sx, xy))
+        print("T@mask {}, sx {}, sy {}".format(ts, sx, sy))
         assert int(w0) == patch_pos_embed.shape[-2]
         assert int(h0) == patch_pos_embed.shape[-1]
         patch_pos_embed = patch_pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)

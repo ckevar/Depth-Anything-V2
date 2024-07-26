@@ -319,7 +319,7 @@ class DinoVisionTransformer(nn.Module):
             print("pretrained norm")
 
         ts = time.time()
-        class_tokens = [out[:, 0] for out in outputs]
+        
         outputs = [out[:, 1 + self.num_register_tokens:] for out in outputs]
         if reshape:
             print("pretrained reshape")
@@ -333,20 +333,11 @@ class DinoVisionTransformer(nn.Module):
         print("time in reshaping {}".format(ts))
         
         if return_class_token:
-            ts = time.time()
+            class_tokens = [out[:, 0] for out in outputs]
             z1 = zip(outputs, class_tokens)
-            torch.cuda.synchronize()
-            ts = time.time() - ts
-            print("Time on zip {}".format(ts))
-            '''
-            ts = time.time()
-            z1 = tuple(z1)
-            torch.cuda.synchronize()
-            ts = time.time() - ts
-            print("Time on tuple {}".format(ts))
-            '''
+            # out: return tuple(zip(outputs, class_tokens))
             return z1
-        return tuple(outputs)
+        return outputs
 
     def forward(self, *args, is_training=False, **kwargs):
         ret = self.forward_features(*args, **kwargs)

@@ -16,6 +16,7 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint
 from torch.nn.init import trunc_normal_
+from torchvision.models._utils import IntermediateLayerGetter
 
 from .dinov2_layers import Mlp, PatchEmbed, SwiGLUFFNFused, MemEffAttention, NestedTensorBlock as Block
 
@@ -162,6 +163,7 @@ class DinoVisionTransformer(nn.Module):
         else:
             self.chunked_blocks = False
             self.blocks = nn.ModuleList(blocks_list)
+            #self.blocks = nn.Sequential(blocks_list)
 
         self.norm = norm_layer(embed_dim)
         self.head = nn.Identity()
@@ -284,12 +286,22 @@ class DinoVisionTransformer(nn.Module):
         print("T@ len {}".format(ts))
 
         ts = time.time()
+        '''
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
         for i, blk in enumerate(self.blocks):
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
         torch.cuda.synchronize()
+        '''
+        output = [None] * len(n)
+        j = 0;
+        for i, blk in enumarate(self.blocks):
+            x = blk(x)
+            if i == n[j]: 
+                output[i] = x
+                j += 1
+            
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"

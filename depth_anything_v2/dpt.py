@@ -181,7 +181,7 @@ class DepthAnythingV2(nn.Module):
         
         ts = time.time()
         # out: features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=True)
-        # torch.cuda.synchronize()
+        torch.cuda.synchronize()
         features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=False)
         ts = time.time() - ts
         print("time on pretrained {}".format(ts))
@@ -189,7 +189,7 @@ class DepthAnythingV2(nn.Module):
         ts = time.time()
         depth = self.depth_head(features, patch_h, patch_w)
         depth = F.relu(depth)
-        # torch.cuda.synchronize()
+        torch.cuda.synchronize()
         ts = time.time() - ts
         print("time on fine tunning {}".format(ts))
         
@@ -198,7 +198,7 @@ class DepthAnythingV2(nn.Module):
     @torch.no_grad()
     def infer_image(self, raw_image, input_size=518):
         image, (h, w) = self.image2tensor(raw_image, input_size)
-        # torch.cuda.synchronize()
+        torch.cuda.synchronize()
 
         ts = time.time()
         depth = self.forward(image)

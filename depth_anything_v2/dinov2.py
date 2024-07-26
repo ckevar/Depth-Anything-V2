@@ -214,19 +214,14 @@ class DinoVisionTransformer(nn.Module):
 
     def prepare_tokens_with_masks(self, x, masks=None):
         B, nc, w, h = x.shape
-        print("B {}, nc {}, w {}, h {}".format(B, nc, w, h))
         x = self.patch_embed(x)
-        print("x path {}".format(x.shape))
         
         if masks is not None:
             x = torch.where(masks.unsqueeze(-1), self.mask_token.to(x.dtype).unsqueeze(0), x)
-            print("masking up")
 
         x = torch.cat((self.cls_token.expand(x.shape[0], -1, -1), x), dim=1)
-        print("x path {}".format(x.shape))
-        #x = x + self.interpolate_pos_encoding(x, w, h)
-        x = self.interpolate_pos_encoding(x, w, h)
-        print("x path {}".format(x.shape))
+        x = x + self.interpolate_pos_encoding(x, w, h)
+        
         if self.register_tokens is not None:
             x = torch.cat(
                 (
@@ -236,7 +231,7 @@ class DinoVisionTransformer(nn.Module):
                 ),
                 dim=1,
             )
-        print("x path {}".format(x.shape))
+        
         return x
 
     def forward_features_list(self, x_list, masks_list):
@@ -278,24 +273,15 @@ class DinoVisionTransformer(nn.Module):
         }
 
     def _get_intermediate_layers_not_chunked(self, x, n=1):
-        ts = time.time()
-        print("x shape {}".format(x.shape))
+        
         x = self.prepare_tokens_with_masks(x)
-        print("x shape {}".format(x.shape))
         torch.cuda.synchronize()
-        ts = time.time() - ts
-        print("T@pre token {}".format(ts))
+        
         # If n is an int, take the n last blocks. If it's a list, take them
-        ts = time.time()
         output, total_block_len = [], len(self.blocks)
-        torch.cuda.synchronize()
-        ts = time.time() - ts
-        print("T@ len {}".format(ts))
-
+        
         ts = time.time()
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
-        
-        
         for i, blk in enumerate(self.blocks):
             #ts1 = time.time()
             x = blk(x)

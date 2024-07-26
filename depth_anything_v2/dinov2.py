@@ -225,7 +225,7 @@ class DinoVisionTransformer(nn.Module):
         x = torch.cat((self.cls_token.expand(x.shape[0], -1, -1), x), dim=1)
         print("x path {}".format(x.shape))
         #x = x + self.interpolate_pos_encoding(x, w, h)
-        #x = self.interpolate_pos_encoding(x, w, h)
+        x = self.interpolate_pos_encoding(x, w, h)
         print("x path {}".format(x.shape))
         if self.register_tokens is not None:
             x = torch.cat(

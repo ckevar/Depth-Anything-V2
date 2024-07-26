@@ -306,7 +306,8 @@ class DinoVisionTransformer(nn.Module):
         reshape: bool = False,
         return_class_token: bool = False,
         norm=True
-    ) -> Tuple[Union[torch.Tensor, Tuple[torch.Tensor]]]:
+    ):
+        # OOUT: -> Tuple[Union[torch.Tensor, Tuple[torch.Tensor]]]:
         ts = time.time()
         if self.chunked_blocks:
             print("pretrained in chunks")

@@ -119,7 +119,7 @@ class DPTHead(nn.Module):
         
         
         for i, x in enumerate(out_features):
-            '''        
+            ''' out:
             if self.use_clstoken:
                 x, cls_token = x[0], x[1]
                 readout = cls_token.unsqueeze(1).expand_as(x)
@@ -127,8 +127,6 @@ class DPTHead(nn.Module):
             else:
                 x = x[0]
             '''
-            
-            x = x[0]
             x = x.permute(0, 2, 1).reshape((x.shape[0], x.shape[-1], patch_h, patch_w))
             
             x = self.projects[i](x)
@@ -182,7 +180,8 @@ class DepthAnythingV2(nn.Module):
         patch_h, patch_w = x.shape[-2] // 14, x.shape[-1] // 14
         
         ts = time.time()
-        features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=True)
+        # out: features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=True)
+        features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=False)
         torch.cuda.synchronize()
         ts = time.time() - ts
         print("time on pretrained {}".format(ts))

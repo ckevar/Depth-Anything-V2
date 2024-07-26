@@ -290,20 +290,15 @@ class DinoVisionTransformer(nn.Module):
         print("T@ len {}".format(ts))
 
         ts = time.time()
-        '''
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
         for i, blk in enumerate(self.blocks):
+            ts1 = time.time()
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
-        '''
-        output = [None] * len(n)
-        j = 0;
-        for i, blk in enumerate(self.blocks):
-            x = blk(x)
-            if i == n[j]: 
-                output[j] = x
-                j += 1
+            ts1 = time.time() - ts1
+            print("T@{} {}".format(i, ts1))
+        
         torch.cuda.synchronize()    
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    

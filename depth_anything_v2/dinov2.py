@@ -164,9 +164,9 @@ class DinoVisionTransformer(nn.Module):
             self.chunked_blocks = False
             #self.blocks = nn.ModuleList(blocks_list)
             self.blocks = nn.ModuleList([nn.Sequential(blocks_list[0], blocks_list[1], blocks_list[2]),
-                                         nn.Sequential(blocks_list[0], blocks_list[1], blocks_list[2]),
-                                         nn.Sequential(blocks_list[0], blocks_list[1], blocks_list[2]), 
-                                         nn.Sequential(blocks_list[0], blocks_list[1], blocks_list[2])])
+                                         nn.Sequential(blocks_list[3], blocks_list[4], blocks_list[5]),
+                                         nn.Sequential(blocks_list[6], blocks_list[7], blocks_list[8]), 
+                                         nn.Sequential(blocks_list[9], blocks_list[10], blocks_list[11])])
             #self.blocks = nn.Sequential(blocks_list)
 
         self.norm = norm_layer(embed_dim)

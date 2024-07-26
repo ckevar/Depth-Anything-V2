@@ -150,7 +150,7 @@ class DinoVisionTransformer(nn.Module):
                 ffn_layer=ffn_layer,
                 init_values=init_values,
             )
-            for i in range(4)
+            for i in range(3)
         ]
         if block_chunks > 0:
             self.chunked_blocks = True
@@ -163,7 +163,7 @@ class DinoVisionTransformer(nn.Module):
         else:
             self.chunked_blocks = False
             #self.blocks = nn.ModuleList(blocks_list)
-            self.blocks = nn.ModuleList([nn.Sequential(blocks_list)])
+            self.blocks = nn.ModuleList([nn.Sequential(blocks_list), nn.Sequential(blocks_list), nn.Sequential(blocks_list), nn.Sequential(blocks_list)])
             #self.blocks = nn.Sequential(blocks_list)
 
         self.norm = norm_layer(embed_dim)

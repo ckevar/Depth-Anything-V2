@@ -334,12 +334,14 @@ class DinoVisionTransformer(nn.Module):
         torch.cuda.synchronize()
         ts = time.time() - ts
         print("time in reshaping {}".format(ts))
-        
+
+        '''
         if return_class_token:
             class_tokens = [out[:, 0] for out in outputs]
             z1 = zip(outputs, class_tokens)
             # O.OUT: return tuple(zip(outputs, class_tokens))
             return z1
+        '''
         return outputs
 
     def forward(self, *args, is_training=False, **kwargs):

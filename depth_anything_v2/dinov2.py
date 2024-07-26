@@ -215,7 +215,9 @@ class DinoVisionTransformer(nn.Module):
 
     def prepare_tokens_with_masks(self, x, masks=None):
         B, nc, w, h = x.shape
+        print("B {}, nc {}, w {}, h {}".format(B, nc, w, h))
         x = self.patch_embed(x)
+        print("x path {}".format(x.shape))
         if masks is not None:
             x = torch.where(masks.unsqueeze(-1), self.mask_token.to(x.dtype).unsqueeze(0), x)
 

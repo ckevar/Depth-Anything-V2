@@ -273,11 +273,13 @@ class DinoVisionTransformer(nn.Module):
     def _get_intermediate_layers_not_chunked(self, x, n=1):
         ts = time.time()
         x = self.prepare_tokens_with_masks(x)
+        torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@pre token {}".format(ts))
         # If n is an int, take the n last blocks. If it's a list, take them
         ts = time.time()
         output, total_block_len = [], len(self.blocks)
+        torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@ len {}".format(ts))
 
@@ -287,7 +289,7 @@ class DinoVisionTransformer(nn.Module):
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
-        
+        torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"

@@ -319,7 +319,7 @@ class DinoVisionTransformer(nn.Module):
 
         ts = time.time()
         if norm:
-            return [self.norm(out)[:, 1 + self.num_register_tokens:] for out in outputs]
+            outputs = [self.norm(out)[:, 1 + self.num_register_tokens:] for out in outputs]
         else: 
             outputs = [out[:, 1 + self.num_register_tokens:] for out in outputs]    
         torch.cuda.synchronize()

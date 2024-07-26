@@ -342,7 +342,7 @@ class DinoVisionTransformer(nn.Module):
             return z1
         '''
         print("out in cuda {}".format(outputs[0].is_cuda))
-        return outputs[0]
+        return 1
 
     def forward(self, *args, is_training=False, **kwargs):
         ret = self.forward_features(*args, **kwargs)

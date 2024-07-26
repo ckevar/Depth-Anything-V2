@@ -274,6 +274,7 @@ class DinoVisionTransformer(nn.Module):
 
     def _get_intermediate_layers_not_chunked(self, x, n=1):
         ts = time.time()
+        print("x shape {}".format(x.shape))
         x = self.prepare_tokens_with_masks(x)
         print("x shape {}".format(x.shape))
         torch.cuda.synchronize()

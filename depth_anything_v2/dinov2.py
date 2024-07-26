@@ -19,6 +19,7 @@ from torch.nn.init import trunc_normal_
 
 from .dinov2_layers import Mlp, PatchEmbed, SwiGLUFFNFused, MemEffAttention, NestedTensorBlock as Block
 
+import time
 
 logger = logging.getLogger("dinov2")
 
@@ -302,20 +303,35 @@ class DinoVisionTransformer(nn.Module):
         return_class_token: bool = False,
         norm=True
     ) -> Tuple[Union[torch.Tensor, Tuple[torch.Tensor]]]:
+        ts = time.time()
         if self.chunked_blocks:
+            print("pretrained in chunks")
             outputs = self._get_intermediate_layers_chunked(x, n)
         else:
             outputs = self._get_intermediate_layers_not_chunked(x, n)
+            print("pretrained in no chunks")
+        ts = time.time() - ts
+        torch.cuda.synchronize()
+        print("time in chunked {}".format(ts))
+        
         if norm:
             outputs = [self.norm(out) for out in outputs]
+            print("pretrained norm")
+
+        ts = time.time()
         class_tokens = [out[:, 0] for out in outputs]
         outputs = [out[:, 1 + self.num_register_tokens:] for out in outputs]
         if reshape:
+            print("pretrained reshape")
             B, _, w, h = x.shape
             outputs = [
                 out.reshape(B, w // self.patch_size, h // self.patch_size, -1).permute(0, 3, 1, 2).contiguous()
                 for out in outputs
             ]
+        torch.cuda.synchronize()
+        ts = time.time() - ts
+        print("time in reshaping".format(ts))
+        
         if return_class_token:
             return tuple(zip(outputs, class_tokens))
         return tuple(outputs)

@@ -296,6 +296,7 @@ class DinoVisionTransformer(nn.Module):
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
+            torch.cuda.synchronize()
             ts1 = time.time() - ts1
             print("T@{} {}".format(i, ts1))
         

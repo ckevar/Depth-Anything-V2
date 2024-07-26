@@ -341,7 +341,7 @@ class DinoVisionTransformer(nn.Module):
             # O.OUT: return tuple(zip(outputs, class_tokens))
             return z1
         '''
-        print("out in cuda {}".format(outputs.is_cuda))
+        print("out in cuda {}".format(outputs[0].is_cuda))
         return outputs
 
     def forward(self, *args, is_training=False, **kwargs):

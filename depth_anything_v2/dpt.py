@@ -198,10 +198,10 @@ class DepthAnythingV2(nn.Module):
     @torch.no_grad()
     def infer_image(self, raw_image, input_size=518):
         image, (h, w) = self.image2tensor(raw_image, input_size)
-        
+        torch.cuda.synchronize()
+
         ts = time.time()
         depth = self.forward(image)
-        torch.cuda.synchronize()
         ts = time.time() - ts
         print("Time on inference {}".format(ts))
         

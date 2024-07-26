@@ -279,13 +279,13 @@ class DinoVisionTransformer(nn.Module):
         print("x shape {}".format(x.shape))
         x = self.prepare_tokens_with_masks(x)
         print("x shape {}".format(x.shape))
-        torch.cuda.synchronize()
+        #torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@pre token {}".format(ts))
         # If n is an int, take the n last blocks. If it's a list, take them
         ts = time.time()
         output, total_block_len = [], len(self.blocks)
-        torch.cuda.synchronize()
+        #torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@ len {}".format(ts))
 
@@ -296,11 +296,11 @@ class DinoVisionTransformer(nn.Module):
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
-            torch.cuda.synchronize()
+            #torch.cuda.synchronize()
             ts1 = time.time() - ts1
             print("T@{} {}".format(i, ts1))
         
-        torch.cuda.synchronize()    
+        #torch.cuda.synchronize()    
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"
@@ -337,7 +337,7 @@ class DinoVisionTransformer(nn.Module):
             outputs = self._get_intermediate_layers_not_chunked(x, n)
             print("pretrained in no chunks")
             
-        torch.cuda.synchronize()
+        # torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@chunked {}, out {}".format(ts, len(outputs)))
 
@@ -346,7 +346,7 @@ class DinoVisionTransformer(nn.Module):
             outputs = [self.norm(out)[:, 1 + self.num_register_tokens:] for out in outputs]
         else: 
             outputs = [out[:, 1 + self.num_register_tokens:] for out in outputs]    
-        torch.cuda.synchronize()
+        # torch.cuda.synchronize()
         ts = time.time() - ts
         print("T@norm {}".format(ts))
         

@@ -291,6 +291,8 @@ class DinoVisionTransformer(nn.Module):
 
         ts = time.time()
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
+        
+        '''
         for i, blk in enumerate(self.blocks):
             ts1 = time.time()
             x = blk(x)
@@ -299,7 +301,22 @@ class DinoVisionTransformer(nn.Module):
             #torch.cuda.synchronize()
             ts1 = time.time() - ts1
             print("T@{} {}".format(i, ts1))
-        
+        '''
+        x = self.blocks[0](x)
+        x = self.blocks[1](x)
+        x = self.blocks[2](x)
+        output.append(x)
+        x = self.blocks[3](x)
+        x = self.blocks[4](x)
+        x = self.blocks[5](x)
+        output.append(x)
+        x = self.blocks[6](x)
+        x = self.blocks[7](x)
+        x = self.blocks[8](x)
+        output.append(x)
+        x = self.blocks[9](x)
+        x = self.blocks[10](x)
+        output.append(self.blocks[11](x))
         #torch.cuda.synchronize()    
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    

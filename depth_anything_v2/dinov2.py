@@ -292,7 +292,6 @@ class DinoVisionTransformer(nn.Module):
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
-        torch.cuda.synchronize()
         '''
         output = [None] * len(n)
         j = 0;
@@ -301,7 +300,7 @@ class DinoVisionTransformer(nn.Module):
             if i == n[j]: 
                 output[j] = x
                 j += 1
-            
+        torch.cuda.synchronize()    
         ts = time.time() - ts
         print("T@ enum {}".format(ts))    
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"

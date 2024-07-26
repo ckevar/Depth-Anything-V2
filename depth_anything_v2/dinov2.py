@@ -296,7 +296,7 @@ class DinoVisionTransformer(nn.Module):
         '''
         output = [None] * len(n)
         j = 0;
-        for i, blk in enumarate(self.blocks):
+        for i, blk in enumerate(self.blocks):
             x = blk(x)
             if i == n[j]: 
                 output[i] = x

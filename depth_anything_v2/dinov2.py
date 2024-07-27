@@ -204,6 +204,7 @@ class DinoVisionTransformer(nn.Module):
             scale_factor=(sx, sy),
             # (int(w0), int(h0)), # to solve the upsampling shape issue
             # mode="bicubic",
+            mode="bilinear",
             antialias=self.interpolate_antialias
         )
         

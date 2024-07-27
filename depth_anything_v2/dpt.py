@@ -215,8 +215,8 @@ class DepthAnythingV2(nn.Module):
         print("Time on inference {}".format(ts))
         
         ts = time.time()
-        #out: depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
-        depth_cpu = (depth.squeeze() / torch.max(depth) * 255).type(torch.uint8)
+        out: depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
+        depth_cpu = (depth / torch.max(depth) * 255).type(torch.uint8)
         ts = time.time() - ts
         print("Time on interpolate {}".format(ts))
         return depth_cpu.to('cpu', non_blocking=True).numpy() 

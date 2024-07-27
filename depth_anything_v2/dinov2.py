@@ -183,6 +183,7 @@ class DinoVisionTransformer(nn.Module):
         npatch = x.shape[1] - 1
         N = self.pos_embed.shape[1] - 1
         if npatch == N and w == h:
+            print("->everything is ok")
             return self.pos_embed
         pos_embed = self.pos_embed.float()
         class_pos_embed = pos_embed[:, 0]
@@ -198,6 +199,7 @@ class DinoVisionTransformer(nn.Module):
         
         sqrt_N = math.sqrt(N)
         sx, sy = float(w0) / sqrt_N, float(h0) / sqrt_N
+        print("patch shape 0 {}".format(patch_pos_embed))
         patch_pos_embed = nn.functional.interpolate(
             patch_pos_embed.reshape(1, int(sqrt_N), int(sqrt_N), dim).permute(0, 3, 1, 2),
             scale_factor=(sx, sy),
@@ -205,10 +207,12 @@ class DinoVisionTransformer(nn.Module):
             mode="bicubic",
             antialias=self.interpolate_antialias
         )
+        print("patch shape 1 {}".format(patch_pos_embed))
         
         assert int(w0) == patch_pos_embed.shape[-2]
         assert int(h0) == patch_pos_embed.shape[-1]
         patch_pos_embed = patch_pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
+        print("patch shape 2 {}".format(patch_pos_embed))
         # OOOUT: return torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1).to(previous_dtype)
         return torch.cat((class_pos_embed.unsqueeze(0), patch_pos_embed), dim=1)
 

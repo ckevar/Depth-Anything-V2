@@ -155,7 +155,7 @@ class DPTHead(nn.Module):
         
         out = self.scratch.output_conv1(path_1)
         #print("out1 {}".format(out.size()))
-        out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
+        #out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
         #print("out2 {}".format(out.size()))
         out = self.scratch.output_conv2(out)
         
@@ -215,8 +215,8 @@ class DepthAnythingV2(nn.Module):
         print("Time on inference {}".format(ts))
         
         ts = time.time()
-        #out: depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
-        depth_cpu = (depth.squeeze() / torch.max(depth) * 255).type(torch.uint8)
+        depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
+        depth_cpu = (depth / torch.max(depth) * 255).type(torch.uint8)
         ts = time.time() - ts
         print("Time on interpolate {}".format(ts))
         return depth_cpu.to('cpu', non_blocking=True).numpy() 

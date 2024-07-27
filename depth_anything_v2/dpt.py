@@ -145,7 +145,7 @@ class DPTHead(nn.Module):
         
         layer_1_rn = self.scratch.layer1_rn(out[0])
         layer_2_rn = self.scratch.layer2_rn(out[1])
-        layer_3_rn = self.scratch.layer3_rn(out[2))
+        layer_3_rn = self.scratch.layer3_rn(out[2])   
         layer_4_rn = self.scratch.layer4_rn(out[3])
         
         path_4 = self.scratch.refinenet4(layer_4_rn, size=layer_3_rn.shape[2:])        

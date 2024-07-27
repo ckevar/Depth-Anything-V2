@@ -199,12 +199,11 @@ class DinoVisionTransformer(nn.Module):
         
         sqrt_N = math.sqrt(N)
         sx, sy = float(w0) / sqrt_N, float(h0) / sqrt_N
-        print("patch shape 0 {}".format(patch_pos_embed.size()))
         patch_pos_embed = nn.functional.interpolate(
             patch_pos_embed.reshape(1, int(sqrt_N), int(sqrt_N), dim).permute(0, 3, 1, 2),
             scale_factor=(sx, sy),
             # (int(w0), int(h0)), # to solve the upsampling shape issue
-            mode="bicubic",
+            # mode="bicubic",
             antialias=self.interpolate_antialias
         )
         print("patch shape 1 {}".format(patch_pos_embed.size()))

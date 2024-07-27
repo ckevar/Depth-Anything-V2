@@ -155,7 +155,7 @@ class DPTHead(nn.Module):
         
         out = self.scratch.output_conv1(path_1)
         # OOUT: out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
-        out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), align_corners=False)
+        out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)))
         out = self.scratch.output_conv2(out)
         
         return out

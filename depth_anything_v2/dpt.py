@@ -154,9 +154,8 @@ class DPTHead(nn.Module):
         path_1 = self.scratch.refinenet1(path_2, layer_1_rn)
         
         out = self.scratch.output_conv1(path_1)
-        #print("out1 {}".format(out.size()))
-        out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
-        #print("out2 {}".format(out.size()))
+        # OOUT: out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
+        out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), align_corners=True)
         out = self.scratch.output_conv2(out)
         
         return out

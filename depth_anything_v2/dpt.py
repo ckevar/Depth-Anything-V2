@@ -222,13 +222,14 @@ class DepthAnythingV2(nn.Module):
     
     def image2tensor(self, raw_image, input_size=518):
         h, w = raw_image.shape[:2]
-        image = raw_image[:,:,0:1].astype(np.float32)
+        image = raw_image[:,:,0].astype(np.float32)
         
         image = torch.from_numpy(image).unsqueeze(0)
         
         DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
-        image = image.to(DEVICE)
-        image = ((image - 255.0*0.426)) / (255*0.229)
-        image[0] = torch.stack((image[], image, image), axis=1)
+        image1 = image.to(DEVICE)
+        print(image1.size())
+        image1 = ((image1 - 255.0*0.426)) / (255*0.229)
+        image = torch.stack((image1, image1, image1), axis=1)
         print(image.size())
         return image, (h, w)

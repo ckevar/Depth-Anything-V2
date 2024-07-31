@@ -222,7 +222,7 @@ class DepthAnythingV2(nn.Module):
     
     def image2tensor(self, raw_image, input_size=518):
         h, w = raw_image.shape[:2]
-        image = raw_image[:,:,0].astype(np.float32)
+        image = raw_image.astype(np.float32)
         
         image = torch.from_numpy(image).unsqueeze(0)
         
@@ -230,6 +230,8 @@ class DepthAnythingV2(nn.Module):
         image1 = image.to(DEVICE)
         print(image1.size())
         image1 = ((image1 - 255.0*0.426)) / (255*0.229)
+        torch.transpose(image1, 1, 0, 2, 3)
+        print(image1,size())
         image = torch.stack((image1[0,:,:,0], image1[0,:,:,0], image1[0,:,:,0]), axis=1)
         print(image.size())
         return image, (h, w)

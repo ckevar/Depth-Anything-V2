@@ -230,7 +230,7 @@ class DepthAnythingV2(nn.Module):
         image1 = image.to(DEVICE)
         print(image1.size())
         image1 = ((image1 - 255.0*0.426)) / (255*0.229)
-        torch.transpose(image1, 3, 0, 1, 2)
+        torch.transpose(image1, 3, 0)
         print(image1,size())
         image = torch.stack((image1[0,:,:,0], image1[0,:,:,0], image1[0,:,:,0]), axis=1)
         print(image.size())

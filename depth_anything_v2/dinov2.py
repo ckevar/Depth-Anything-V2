@@ -447,5 +447,5 @@ def DINOv2(model_name):
         num_register_tokens=0,
         interpolate_antialias=False,
         interpolate_offset=0.1,
-        drop_rate_path = 0.5,
+        drop_path_rate = 0.5,
     )

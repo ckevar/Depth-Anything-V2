@@ -227,7 +227,7 @@ class DepthAnythingV2(nn.Module):
         image = torch.from_numpy(image).unsqueeze(0)
         
         #DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
-        image.to(DEVICE)
+        image = image.to(DEVICE)
         image = ((image - 255.0*0.426)) / (255*0.229)
         image = torch.stack((image, image, image), axis=1)
         print(image.size())

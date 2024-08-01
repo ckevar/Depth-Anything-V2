@@ -286,7 +286,7 @@ class DinoVisionTransformer(nn.Module):
             x = blk(x)
             if i in blocks_to_take:
                 output.append(x)
-        output[3] = output[2]        
+          
         print(output[0].size())
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"
         return output
@@ -446,5 +446,6 @@ def DINOv2(model_name):
         block_chunks=0,
         num_register_tokens=0,
         interpolate_antialias=False,
-        interpolate_offset=0.1
+        interpolate_offset=0.1,
+        drop_path_rate=0.5
     )

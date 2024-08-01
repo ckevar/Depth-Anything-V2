@@ -119,8 +119,7 @@ class DinoVisionTransformer(nn.Module):
             dpr = [drop_path_rate] * depth
         else:
             dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]  # stochastic depth decay rule
-        dpr = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,]
-        print("dpr {}".format(dpr))
+        
         if ffn_layer == "mlp":
             logger.info("using MLP layer as FFN")
             ffn_layer = Mlp
@@ -448,5 +447,5 @@ def DINOv2(model_name):
         num_register_tokens=0,
         interpolate_antialias=False,
         interpolate_offset=0.1,
-        drop_path_rate=0.5
+        drop_rate_path = 0.5,
     )

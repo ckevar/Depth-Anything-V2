@@ -102,8 +102,8 @@ class Block(nn.Module):
             x = x + self.drop_path1(attn_residual_func(x))
             x = x + self.drop_path1(ffn_residual_func(x))  # FIXME: drop_path2
         else:
-            x = x + self.drop_path1(attn_residual_func(x))
-            x = x + self.drop_path1(ffn_residual_func(x))
+            x = x + attn_residual_func(x)
+            x = x + ffn_residual_func(x)
         return x
 
 

@@ -284,10 +284,11 @@ class DinoVisionTransformer(nn.Module):
         blocks_to_take = range(total_block_len - n, total_block_len) if isinstance(n, int) else n
         for i, blk in enumerate(self.blocks):
             x = blk(x)
-            print(x.size())
             if i in blocks_to_take:
                 output.append(x)
-
+        output[1] = output[0]
+        output[2] = output[0]
+        output[3] = output[0]
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"
         return output
 

@@ -204,8 +204,8 @@ class DepthAnythingV2(nn.Module):
         return depth.squeeze(1)
     
     @torch.no_grad()
-    def infer_image(self, raw_image, input_size=518):
-        image, (h, w) = self.image2tensor(raw_image, input_size)
+    def infer_image(self, raw_image, device, input_size=518):
+        image, (h, w) = self.image2tensor(raw_image, device, input_size)
         torch.cuda.synchronize()
 
         ts = time.time()
@@ -220,13 +220,13 @@ class DepthAnythingV2(nn.Module):
         print("Time on interpolate {}".format(ts))
         return depth_cpu.to('cpu', non_blocking=True).numpy() 
     
-    def image2tensor(self, raw_image, input_size=518):
+    def image2tensor(self, raw_image, DEVICE, input_size=518):
         h, w = raw_image.shape[:2]
         image = raw_image[:,:,0].astype(np.float32)
         
         image = torch.from_numpy(image).unsqueeze(0)
         
-        DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
+        #DEVICE = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
         image1 = image.to(DEVICE)
         image1 = ((image1 - 255.0*0.426)) / (255*0.229)
         image = torch.stack((image1, image1, image1), axis=1)

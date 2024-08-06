@@ -183,7 +183,6 @@ class DinoVisionTransformer(nn.Module):
         npatch = x.shape[1] - 1
         N = self.pos_embed.shape[1] - 1
         if npatch == N and w == h:
-            print("->everything is ok")
             return self.pos_embed
         pos_embed = self.pos_embed.float()
         class_pos_embed = pos_embed[:, 0]
@@ -287,7 +286,6 @@ class DinoVisionTransformer(nn.Module):
             if i in blocks_to_take:
                 output.append(x)
           
-        print(output[0].size())
         # OOUT: assert len(output) == len(blocks_to_take), f"only {len(output)} / {len(blocks_to_take)} blocks found"
         return output
 
@@ -316,15 +314,13 @@ class DinoVisionTransformer(nn.Module):
         # OOUT: -> Tuple[Union[torch.Tensor, Tuple[torch.Tensor]]]:
         ts = time.time()
         if self.chunked_blocks:
-            print("pretrained in chunks")
             outputs = self._get_intermediate_layers_chunked(x, n)
         else:
             outputs = self._get_intermediate_layers_not_chunked(x, n)
-            print("pretrained in no chunks")
             
         torch.cuda.synchronize()
         ts = time.time() - ts
-        print("T@chunked {}, out {}".format(ts, len(outputs)))
+        #print("T@chunked {}, out {}".format(ts, len(outputs)))
 
         ts = time.time()
         if norm:

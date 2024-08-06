@@ -192,14 +192,14 @@ class DepthAnythingV2(nn.Module):
         torch.cuda.synchronize()
         features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=False)
         ts = time.time() - ts
-        print("time on pretrained {}".format(ts))
+        # print("time on pretrained {}".format(ts))
 
         ts = time.time()
         depth = self.depth_head(features, patch_h, patch_w)
         depth = F.relu(depth)
         torch.cuda.synchronize()
         ts = time.time() - ts
-        print("time on fine tunning {}".format(ts))
+        # print("time on fine tunning {}".format(ts))
         
         return depth.squeeze(1)
     
@@ -213,11 +213,11 @@ class DepthAnythingV2(nn.Module):
         ts = time.time() - ts
         print("Time on inference {}".format(ts))
         
-        ts = time.time()
+        # ts = time.time()
         #depth = F.interpolate(depth[:, None], (h, w), mode="bilinear", align_corners=True).squeeze()
         depth_cpu = (depth.squeeze() / torch.max(depth) * 255).type(torch.uint8)
-        ts = time.time() - ts
-        print("Time on interpolate {}".format(ts))
+        #ts = time.time() - ts
+        #print("Time on interpolate {}".format(ts))
         return depth_cpu.to('cpu', non_blocking=True).numpy() 
     
     def image2tensor(self, raw_image, DEVICE, input_size=518):
@@ -230,5 +230,5 @@ class DepthAnythingV2(nn.Module):
         image = image.to(DEVICE)
         image = ((image - 255.0*0.426)) / (255*0.229)
         image = torch.stack((image, image, image), axis=1)
-        print(image.size())
+        
         return image, (h, w)
